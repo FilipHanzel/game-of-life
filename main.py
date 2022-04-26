@@ -1,21 +1,40 @@
+import argparse
+
 import pygame
 
 from game import Game
 
 
 def main():
-    screen_size = 1200
-    tile_size = 5
-    tile_count = screen_size // tile_size
+    parser = argparse.ArgumentParser(
+        description="Pure python Game of Life implementation."
+    )
+    parser.add_argument(
+        "--screen-size", "-s", action="store", type=int, default=800, dest="screen_size"
+    )
+    parser.add_argument(
+        "--tile-size", "-t", action="store", type=int, default=10, dest="tile_size"
+    )
+    parser.add_argument(
+        "--fps-cap", "-f", action="store", type=int, default=120, dest="fps_cap"
+    )
+    parser.add_argument(
+        "--empty", "-e", action="store_true", default=False, dest="empty"
+    )
+    args = parser.parse_args()
+
+    tile_count = args.screen_size // args.tile_size
 
     pygame.init()
-    screen = pygame.display.set_mode((screen_size, screen_size))
-    pygame.display.set_caption("Game of Life")
+    screen = pygame.display.set_mode((args.screen_size, args.screen_size))
+    pygame.display.set_caption("Game of Life - paused")
 
     clock = pygame.time.Clock()
 
     game = Game(tile_count)
-    game.randomize()
+
+    if not args.empty:
+        game.randomize()
 
     running = False
     end = False
@@ -28,11 +47,14 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     running = not running
+                    pygame.display.set_caption(
+                        f"Game of Life - {'running' if running else 'paused'}"
+                    )
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
-                x //= tile_size
-                y //= tile_size
+                x //= args.tile_size
+                y //= args.tile_size
                 game.map[y][x] = 1 if game.map[y][x] == 0 else 0
 
         if running:
@@ -48,15 +70,15 @@ def main():
                         surface=screen,
                         color=(0, 255, 100),
                         rect=(
-                            col_idx * tile_size,
-                            row_idx * tile_size,
-                            tile_size,
-                            tile_size,
+                            col_idx * args.tile_size,
+                            row_idx * args.tile_size,
+                            args.tile_size,
+                            args.tile_size,
                         ),
                     )
 
         pygame.display.flip()
-        clock.tick(120)  # 120 fps cap
+        clock.tick(args.fps_cap)
 
     pygame.quit()
 
