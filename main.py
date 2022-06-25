@@ -24,17 +24,20 @@ def main():
     args = parser.parse_args()
 
     tile_count = args.screen_size // args.tile_size
+    print(f"Running the game with {tile_count ** 2} tiles...")
 
     pygame.init()
     screen = pygame.display.set_mode((args.screen_size, args.screen_size))
     pygame.display.set_caption("Game of Life - paused")
 
-    clock = pygame.time.Clock()
+    fps_font = pygame.font.SysFont("Arial", 18)
 
     game = Game(tile_count)
 
     if not args.empty:
         game.randomize()
+
+    clock = pygame.time.Clock()
 
     running = False
     end = False
@@ -76,6 +79,10 @@ def main():
                             args.tile_size,
                         ),
                     )
+
+        fps = str(round(clock.get_fps(), 5))
+        fps_text = fps_font.render(fps, True, "black")
+        screen.blit(fps_text, (10, 0))
 
         pygame.display.flip()
         clock.tick(args.fps_cap)
