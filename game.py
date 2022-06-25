@@ -66,6 +66,9 @@ if __name__ == "__main__":
     parser.add_argument("--empty", "-e", action="store_true", default=False)
     args = parser.parse_args()
 
+    if args.screen_size % args.tile_size != 0:
+        raise ValueError("screen size must be divisible by tile size")
+
     tile_count = args.screen_size // args.tile_size
     print(f"Running the game with {tile_count ** 2} tiles...")
 
