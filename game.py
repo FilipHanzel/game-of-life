@@ -2,6 +2,8 @@ import random
 
 
 class Game:
+    __slots__ = ("map", "size")
+
     def __init__(self, size: int = 100):
         self.map = [[0] * size for _ in range(size)]
         self.size = size
