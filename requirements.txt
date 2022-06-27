@@ -1,0 +1,4 @@
+pygame
+numpy
+# Install correct version of cupy https://docs.cupy.dev/en/stable/install.html
+cupy
