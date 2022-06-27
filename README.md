@@ -5,7 +5,7 @@
 Implementation of *Game of Life* algorithm in pure python, Numpy and CuPy with visualization in pygame. CuPy implementation is similar to numpy with minor adjustments for pygame visualization.
 
 ### Time comparison
-Time can be roughly compared using src/compare.py script (sample output below)
+Time can be roughly compared using src/compare.py script (sample output below for map size 5000x5000)
 ```
 Runnig vanilla python implementation...
 Init time: 0.17900[s] Total loop time: 109.09504[s], 5 iterations, 21.81901[s] per iteration
